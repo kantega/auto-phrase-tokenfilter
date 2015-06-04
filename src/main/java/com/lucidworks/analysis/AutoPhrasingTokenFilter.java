@@ -170,7 +170,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
     }
 
     if (currentSetToCheck == null || currentSetToCheck.size() == 0 ) {
-      Log.debug( "Checking for phrase start on '" + new String( nextToken ) + "'" );
+      Log.debug( "Checking for phrase start on ''", new String( nextToken )  );
 
       if (phraseMap.keySet().contains( nextToken, 0, nextToken.length )) {
         // get the phrase set for this token, add it to currentSetTocheck
@@ -374,7 +374,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
     char[] replaced = new char[ token.length ];
 	for (int i = 0; i < token.length; i++ ) {
       if (token[i] == ' ' ) {
-        replaced[i] = replaceWhitespaceWith.charValue();
+        replaced[i] = replaceWhitespaceWith;
 	  }
       else {
         replaced[i] = token[i];
@@ -423,16 +423,16 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
 	  }
 
 
-  private CharArrayMap convertPhraseSet( CharArraySet phraseSet ) {
-	CharArrayMap<CharArraySet> phraseMap = new CharArrayMap( 100, false);
+  private CharArrayMap<CharArraySet> convertPhraseSet( CharArraySet phraseSet ) {
+	CharArrayMap<CharArraySet> phraseMap = new CharArrayMap<>( 100, false);
 	Iterator<Object> phraseIt = phraseSet.iterator( );
 	while (phraseIt != null && phraseIt.hasNext() ) {
 	  char[] phrase = (char[])phraseIt.next();
 
-	  Log.debug( "'" + new String( phrase ) + "'" );
+	  Log.debug( "'{}'", new String( phrase ) );
 
 	  char[] firstTerm = getFirstTerm( phrase );
-	  Log.debug( "'" + new String( firstTerm ) + "'" );
+	  Log.debug( "'{}'", new String( firstTerm ) );
 
 	  CharArraySet itsPhrases = phraseMap.get( firstTerm, 0, firstTerm.length );
 	  if (itsPhrases == null) {
@@ -467,7 +467,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
   // need to recompute the token positions based on the length of the currentPhrase,
   // the current ending position and the length of each token.
   private void discardCharTokens( StringBuffer phrase, ArrayList<Token> tokenList ) {
-	Log.debug( "discardCharTokens: '" + phrase.toString() + "'" );
+	Log.debug( "discardCharTokens: '{}'", phrase );
 	OffsetAttribute offAttr = getOffsetAttribute( );
 	int endPos = offAttr.endOffset( );
 	int startPos = endPos - phrase.length();
@@ -484,7 +484,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
 
 		  token.startPos = startPos + lastSp;
 		  token.endPos = token.startPos + tok.length;
-		  Log.debug( "discard " + new String( tok ) + ": " + token.startPos + ", " + token.endPos );
+		  Log.debug( "discard {}: {}, {}", new String( tok ), token.startPos,  token.endPos );
 		  tokenList.add( token );
 		}
 		lastSp = i+1;
@@ -501,7 +501,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
   }
 
   private CharArraySet remove( CharArraySet fromSet, char[] charArray ) {
-    Log.debug( "remove from: " + new String( charArray ));
+    Log.debug( "remove from: {}", new String( charArray ));
     CharArraySet newSet = new CharArraySet( 5, false );
     Iterator<Object> phraseIt = currentSetToCheck.iterator();
     while (phraseIt != null && phraseIt.hasNext() ) {
@@ -512,7 +512,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
         newSet.add( phrase );
       }
       else {
-        Log.debug( "removing " + new String( phrase ));
+        Log.debug( "removing {}", new String( phrase ));
       }
     }
 
@@ -523,7 +523,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
     if (replaceWhitespaceWith == null) return phrase;
 	char[] fixed = new char[ phrase.length ];
     for (int i = 0; i < phrase.length; i++) {
-      if (phrase[i] == replaceWhitespaceWith.charValue()) {
+      if (phrase[i] == replaceWhitespaceWith) {
         fixed[i] = ' ';
       }
       else {
