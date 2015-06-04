@@ -3,6 +3,7 @@ package com.lucidworks.analysis;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.lucene.util.AttributeImpl;
 import org.apache.lucene.analysis.TokenFilter;
@@ -43,7 +44,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
   // Queue to allow old tokens that ultimately did not match to be
   // emitted before new tokens are emitted so that the filter can
   // work 'transparently'
-  private ArrayList<Token> unusedTokens = new ArrayList<Token>( );
+  private List<Token> unusedTokens = new ArrayList<>( );
 
   // If true - emit single tokens as well as auto-phrases
   private boolean emitSingleTokens;
@@ -466,7 +467,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
   // reconstruct the unused tokens from the phrase (since it didn't match)
   // need to recompute the token positions based on the length of the currentPhrase,
   // the current ending position and the length of each token.
-  private void discardCharTokens( StringBuffer phrase, ArrayList<Token> tokenList ) {
+  private void discardCharTokens( StringBuffer phrase, List<Token> tokenList ) {
 	Log.debug( "discardCharTokens: '{}'", phrase );
 	OffsetAttribute offAttr = getOffsetAttribute( );
 	int endPos = offAttr.endOffset( );
