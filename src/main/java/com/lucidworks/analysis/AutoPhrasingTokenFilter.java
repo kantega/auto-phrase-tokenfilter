@@ -1,20 +1,20 @@
 package com.lucidworks.analysis;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.lucene.util.AttributeImpl;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.analysis.util.CharArrayMap;
+import org.apache.lucene.analysis.util.CharArraySet;
+import org.apache.lucene.util.AttributeImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Performs "auto phrasing" on a token stream. Auto phrases refer to sequences of tokens that
@@ -171,7 +171,7 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
     }
 
     if (currentSetToCheck == null || currentSetToCheck.size() == 0 ) {
-      Log.debug( "Checking for phrase start on ''", new String( nextToken )  );
+      Log.debug( "Checking for phrase start on '{}'", new String( nextToken )  );
 
       if (phraseMap.keySet().contains( nextToken, 0, nextToken.length )) {
         // get the phrase set for this token, add it to currentSetTocheck
@@ -340,13 +340,13 @@ public class AutoPhrasingTokenFilter extends TokenFilter {
 
 
   private void emit( char[] token ) {
-	System.out.println( "emit: " + new String( token ) );
+	Log.debug( "emit: {}", new String( token ) );
 	if (replaceWhitespaceWith != null) {
 		token = replaceWhiteSpace( token );
 	}
 	CharTermAttribute termAttr = getTermAttribute( );
 	termAttr.setEmpty( );
-	termAttr.append( new StringBuilder( ).append( token ) );
+	termAttr.append( new String( token ) );
 
 	OffsetAttribute offAttr = getOffsetAttribute( );
 	if (offAttr != null && offAttr.endOffset() >= token.length){
